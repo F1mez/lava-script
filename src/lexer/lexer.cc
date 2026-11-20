@@ -74,15 +74,6 @@ namespace lexer {
                     goto code;
                 }
         }
-
-        for (const tokens::token_struct& token : lexed_code) {
-            cout << "Value: " << token.value
-                 << " | Type: " << token.type
-                 << " | Line: " << token.line_num << '\n';
-        }
-
-        cout << lexed_code.size();
-        
         return lexed_code;
     }
 }
