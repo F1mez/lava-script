@@ -1,3 +1,4 @@
+#include "lexer/token.hpp"
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -25,7 +26,7 @@ int main(int argc, char* argv[]) {
     // flags and input file
     int input_file_check = helper::input_check(argc);
     if (input_file_check != 0) {
-        // FINALLY a use case for switch, lol :D
+        // FINALLY a use case for switch, lol xD
         switch (input_file_check) {
             case 30:
                 cerr << "Not enough arguments!\n";
@@ -71,5 +72,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (!source_code.size()) return 0;
+
+    vector<tokens::token_struct> lexed =  lexer::lexer(source_code);
     
 }

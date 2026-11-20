@@ -12,17 +12,24 @@ namespace tokens {
     // but FUCK RAM ALTMAN
     enum TType {
         // short for "DECLARATION"
-        DECL,
-        TYPE,
-        NAME,
-        EQU,
-        COMMENT,
-        ERROR,
-        EMPTY,
-        
-        INT,
-        BOOL,
-        STRING
+        DECL, // 0
+        TYPE, // 1
+        NAME, // 2
+        EQU, // 3
+        ERROR, // 4
+        EMPTY, // 5
+       
+       // declaration types 
+        D_INT, // 6
+        D_BOOL, // 7
+        D_STRING, // 8
+
+        // actual types
+        INT, // 9
+        BOOL, // 10
+        STRING, // 11
+
+        OPERATOR // 12
     };
 
     struct token_struct {
