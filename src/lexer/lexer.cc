@@ -16,7 +16,7 @@ namespace lexer {
         {"set", DECL}, {"Set", DECL},
         {"int", D_INT}, {"Int", D_INT},
         {"bool", D_BOOL}, {"Bool", D_BOOL}, {"boolean", D_BOOL}, {"Boolean", D_BOOL},
-        {"string", D_STRING}, {"String", D_STRING}, {"str", D_STRING},
+        {"string", D_STRING}, {"String", D_STRING},
         {"=", EQU},
         {"+", OPERATOR}, {"-", OPERATOR}, {"*", OPERATOR}, {"/", OPERATOR},
         {"True", BOOL}, {"true", BOOL}, {"T", BOOL}, {"t", BOOL},
@@ -25,6 +25,7 @@ namespace lexer {
     vector<tokens::token_struct> lexed_code;
     vector<tokens::token_struct> lexer(vector<string> source_code) {
         int last_lexed_code = 0;
+        string str;
         for (int line_num = 0; line_num < source_code.size(); ++ line_num) {
             const string line = source_code[line_num];
 
@@ -37,7 +38,32 @@ namespace lexer {
                 last_lexed_code = 0;
                 continue;
             }
+
+            // This checks for string so we can tokenize it
+            if (line[value_position_1] == '"') {
+                size_t closing_quote = line.find('"', value_position_1 + 1);
             
+                if (closing_quote == string::npos) {
+                    lexed_code.push_back({"", ERROR, line_num});
+                    last_lexed_code = 0;
+                    continue;
+                }
+            
+                string value = line.substr(
+                    value_position_1,
+                    closing_quote - value_position_1 + 1
+                );
+            
+                lexed_code.push_back({value, STRING, line_num});
+            
+                last_lexed_code = closing_quote + 1;
+
+                // can't go to jmp here for some reason :D
+                if (last_lexed_code) {
+                    goto code;
+                }
+            }
+
             size_t value_position_2 = line.find_first_of(" \t\n", value_position_1);
             if (value_position_2 == string::npos) {
                 value_position_2 = line.size();
@@ -49,6 +75,7 @@ namespace lexer {
                     continue;
                 }
             }
+
         
             last_lexed_code = value_position_2 + 1;
 
@@ -74,6 +101,7 @@ namespace lexer {
                     goto code;
                 }
         }
+
         return lexed_code;
     }
 }
